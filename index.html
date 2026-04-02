@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/png" href="./singapore-icon.png" />
+  <title>Singapore Airlines | Flight Booking, Changes & Reservations</title>
+  <meta name="description" content="Book Singapore Airlines flights, manage reservations, review travel options, and get support for changes, cancellations, and booking assistance." />
+  <link rel="shortcut icon" type="image/x-icon" href="assets/media/logo.png">
+   
+
+  <style>
+    :root{
+      --primary:#0c2749;
+      --primary-dark:#0c439b;
+      --secondary:#0c2749;
+      --secondary-dark:#0c439b;
+      --accent:#f4b400;
+      --danger:#e31b3f;
+      --danger-dark:#c71334;
+      --text:#0c439b;
+      --muted:#667085;
+      --bg:#f6f8fc;
+      --white:#ffffff;
+      --border:#dfe6f2;
+      --shadow:0 16px 40px rgba(9, 30, 66, 0.08);
+      --shadow-lg:0 24px 60px rgba(9, 30, 66, 0.12);
+      --radius:22px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height:1.5;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .container{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .section{
+      padding:70px 0;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:48px;
+      padding:0 20px;
+      border:none;
+      border-radius:12px;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition:0.25s ease;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color:#fff;
+      box-shadow:0 12px 24px rgba(12, 39, 73, 0.22);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      background:#f99f1c;
+      color:#fff;
+    }
+
+    .btn-secondary{
+      background:linear-gradient(135deg, var(--accent), #d89d00);
+      color:#0c2749;
+      box-shadow:0 10px 22px rgba(244, 180, 0, 0.25);
+    }
+
+    .btn-secondary:hover{
+      transform:translateY(-2px);
+      background:linear-gradient(135deg, var(--danger), var(--danger-dark));
+      color:#fff;
+    }
+
+    .btn-light{
+      background:#fff;
+      color:var(--primary);
+      border:1px solid var(--border);
+    }
+
+    /* HEADER */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(255,255,255,0.94);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(0,0,0,0.05);
+    }
+
+    .nav{
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .nav-left-group{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo img{
+      max-height:60px;
+      width:auto;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      font-size:14px;
+      font-weight:700;
+      color:#26354d;
+    }
+
+    .call-pill{
+      background:var(--primary);
+      color:#fff;
+      padding:12px 16px;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:700;
+      white-space:nowrap;
+      box-shadow:0 10px 22px rgba(12,39,73,.18);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      transition:0.25s ease;
+    }
+
+    .call-pill:hover{
+      background:linear-gradient(135deg, var(--danger), var(--danger-dark));
+      color:#fff;
+      transform:translateY(-2px);
+    }
+
+    /* HERO */
+    .hero{
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(12,39,73,0.06), transparent 30%),
+        radial-gradient(circle at 80% 18%, rgba(244,180,0,0.10), transparent 26%),
+        linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+      padding:54px 0 36px;
+    }
+
+    .hero-wrap{
+      display:grid;
+      grid-template-columns:0.92fr 1.08fr;
+      gap:28px;
+      align-items:center;
+      position:relative;
+      z-index:2;
+    }
+
+    .hero-copy h1{
+      font-size:40px;
+      line-height:0.98;
+      font-weight:900;
+      margin-bottom:16px;
+      letter-spacing:-1px;
+    }
+
+    .hero-copy h1 .accent{
+      color:#f99f1c;
+    }
+
+    .hero-copy p{
+      max-width:360px;
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:24px;
+      line-height:1.6;
+    }
+
+    .hero-actions{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+
+    .hero-visual{
+      position:relative;
+      min-height:340px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .hero-line{
+      position:absolute;
+      inset:auto 0 auto 0;
+      top:28px;
+      width:100%;
+      pointer-events:none;
+      opacity:.95;
+      filter:hue-rotate(170deg);
+    }
+
+    .location-badge{
+      position:absolute;
+      right:8px;
+      top:76px;
+      width:26px;
+      z-index:3;
+    }
+
+    .plane-image{
+      position:relative;
+      z-index:2;
+      width:min(760px, 85%);
+      filter:drop-shadow(0 24px 45px rgba(0,0,0,0.10));
+    }
+
+    /* BOOKING FORM */
+    .booking-wrap{
+      margin-top:26px;
+      position:relative;
+      z-index:3;
+    }
+
+    .booking-card{
+      background:#fff;
+      border-radius:26px;
+      padding:16px;
+      box-shadow:0 30px 60px rgba(10, 49, 97, 0.08);
+      border:1px solid rgba(12,39,73,0.08);
+    }
+
+    .trip-tabs{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .trip-tab{
+      min-height:46px;
+      border:none;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+      box-shadow:0 10px 22px rgba(12,39,73,0.16);
+      transition:0.25s ease;
+    }
+
+    .trip-tab:hover{
+      background:#f99f1c;
+    }
+
+    .options-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      padding:4px 2px 14px;
+      color:#344054;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .radio-inline{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .radio-inline input{
+      accent-color:var(--primary);
+    }
+
+    .booking-grid{
+      display:grid;
+      grid-template-columns:repeat(6, 1fr);
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .field label{
+      font-size:11px;
+      color:#667085;
+      font-weight:800;
+    }
+
+    .field input,
+    .field select{
+      width:100%;
+      height:44px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:0 12px;
+      font-size:13px;
+      outline:none;
+      color:#1f2a3d;
+      background:#f9fbff;
+      transition:0.2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus{
+      border-color:var(--primary);
+      background:#fff;
+      box-shadow:0 0 0 4px rgba(12,39,73,0.08);
+    }
+
+    .booking-bottom{
+      display:grid;
+      grid-template-columns:1.2fr 1fr 180px;
+      gap:10px;
+      align-items:end;
+    }
+
+    .mini-controls{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      align-items:center;
+      min-height:44px;
+      border:1px solid var(--border);
+      background:#f9fbff;
+      border-radius:10px;
+      padding:0 14px;
+      font-size:13px;
+      font-weight:700;
+      color:#344054;
+    }
+
+    .counter-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:44px;
+      border:1px solid var(--border);
+      background:#f9fbff;
+      border-radius:10px;
+      padding:0 14px;
+    }
+
+    .counter-wrap span{
+      font-size:12px;
+      font-weight:800;
+      color:#344054;
+    }
+
+    .counter{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-left:auto;
+    }
+
+    .counter button{
+      width:26px;
+      height:26px;
+      border-radius:7px;
+      border:1px solid var(--border);
+      background:#fff;
+      cursor:pointer;
+      font-size:16px;
+      font-weight:700;
+      color:var(--primary);
+      transition:0.25s ease;
+    }
+
+    .counter button:hover{
+      background:var(--danger);
+      color:#fff;
+      border-color:var(--danger);
+    }
+
+    .counter-value{
+      min-width:20px;
+      text-align:center;
+      font-weight:800;
+      color:var(--text);
+      font-size:13px;
+    }
+
+    #showFlight{
+      min-height:44px;
+      font-size:13px;
+    }
+
+    /* FEATURES */
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:18px;
+    }
+
+    .feature-card{
+      background:#fff;
+      border-radius:20px;
+      padding:20px;
+      border:1px solid rgba(12,39,73,0.08);
+      box-shadow:var(--shadow);
+      transition:.25s ease;
+    }
+
+    .feature-card:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--shadow-lg);
+    }
+
+    .feature-icon{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg, rgba(12,39,73,0.10), rgba(244,180,0,0.14));
+      margin-bottom:14px;
+    }
+
+    .feature-icon img{
+      width:22px;
+      height:22px;
+      object-fit:contain;
+    }
+
+    .feature-card h3{
+      font-size:18px;
+      margin-bottom:8px;
+      line-height:1.2;
+    }
+
+    .feature-card p{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    /* DESTINATIONS FIXED */
+    .destinations{
+      background: linear-gradient(180deg, #eef4fb 0%, #f6f9fd 100%);
+      overflow: hidden;
+      position: relative;
+      padding: 78px 0;
+    }
+
+    .destinations-wrap{
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .dest-copy{
+      position: relative;
+      z-index: 3;
+    }
+
+    .dest-copy .tag-list{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .dest-copy .tag-list span{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      padding: 7px 14px;
+      border-radius: 10px;
+      box-shadow: 0 10px 22px rgba(9, 30, 66, 0.08);
+      font-size: 14px;
+      font-weight: 800;
+      color: #142033;
+      line-height: 1;
+    }
+
+    .dest-copy .tag-list .highlight{
+      color: var(--primary);
+    }
+
+    .dest-copy p{
+      color: #667085;
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 26px;
+      max-width: 430px;
+    }
+
+    .dest-cards{
+      position: relative;
+      min-height: 450px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 22px;
+      z-index: 2;
+    }
+
+    .dest-bg-shape{
+      position: absolute;
+      width: 78%;
+      height: 330px;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #dfe8f3 0%, #d7e1ee 100%);
+      border-radius: 46px;
+      z-index: 0;
+      opacity: 0.8;
+    }
+
+    .city-card{
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      border: 5px solid rgba(255,255,255,0.92);
+      box-shadow: 0 24px 50px rgba(12, 39, 73, 0.16);
+      background: #d9e8ff;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+
+    .city-card img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .city-card.small{
+      width: 190px;
+      height: 310px;
+    }
+
+    .city-card.tall{
+      width: 300px;
+      height: 430px;
+      transform: translateY(22px);
+    }
+
+    .city-label{
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      line-height: 1;
+      z-index: 3;
+      white-space: nowrap;
+    }
+
+    .city-card.small .city-label{
+      font-size: 18px;
+    }
+
+    .city-card.tall .city-label{
+      font-size: 28px;
+    }
+
+    .city-card::after{
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 42%;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.72) 100%);
+      z-index: 2;
+    }
+
+    /* LOWER CARDS */
+    .content-card{
+      background:#fff;
+      border-radius:28px;
+      padding:14px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(12,39,73,0.08);
+      transition:.25s ease;
+    }
+
+    .content-card:hover{
+      transform:translateY(-3px);
+      box-shadow:var(--shadow-lg);
+    }
+
+    .split-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      align-items:center;
+    }
+
+    .visual-side{
+      position:relative;
+      min-height:330px;
+      border-radius:22px;
+      overflow:hidden;
+      background:linear-gradient(180deg,#f7fbff 0%, #edf4ff 100%);
+    }
+
+    .visual-side img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .visual-side.map-style img{
+      object-fit:contain;
+      padding:16px;
+    }
+
+    .call-pill{
+        display: none;
+    }
+
+    .map-tag{
+      position:absolute;
+      padding:6px 10px;
+      border-radius:8px;
+      font-size:11px;
+      font-weight:800;
+      color:#fff;
+      box-shadow:0 10px 18px rgba(0,0,0,.12);
+    }
+
+    .tag-blue{ background:#0c2749; }
+    .tag-orange{ background:#f4b400; color:#0c2749; }
+
+    .tag-frankfurt-a{ left:18px; top:138px; }
+    .tag-frankfurt-b{ left:18px; top:176px; }
+    .tag-munich-a{ left:145px; top:58px; }
+    .tag-munich-b{ left:200px; top:76px; }
+    .tag-berlin-a{ left:152px; bottom:80px; }
+    .tag-berlin-b{ left:92px; bottom:24px; }
+    .tag-vienna-a{ right:44px; bottom:82px; }
+    .tag-vienna-b{ right:36px; bottom:24px; }
+
+    .content-side{
+      padding:8px 6px;
+    }
+
+    .content-side h2{
+      font-size:22px;
+      line-height:1.05;
+      margin-bottom:12px;
+      font-weight:900;
+      letter-spacing:-0.3px;
+      max-width:420px;
+    }
+
+    .content-side p{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+      margin-bottom:12px;
+      max-width:470px;
+    }
+
+    .info-list{
+      display:grid;
+      gap:10px;
+      margin:16px 0 20px;
+      padding:0;
+    }
+
+    .info-list li{
+      list-style:none;
+      position:relative;
+      padding-left:20px;
+      color:#334155;
+      font-size:12px;
+      font-weight:700;
+      line-height:1.5;
+    }
+
+    .info-list li::before{
+      content:"✓";
+      position:absolute;
+      left:0;
+      top:0;
+      color:var(--primary);
+      font-weight:900;
+    }
+
+    .info-boxes{
+      display:grid;
+      gap:10px;
+      margin:14px 0 18px;
+    }
+
+    .info-box{
+      background:#f7faff;
+      border:1px solid #e3ebf6;
+      border-radius:12px;
+      padding:12px 14px;
+    }
+
+    .info-box h4{
+      font-size:13px;
+      font-weight:900;
+      margin-bottom:5px;
+    }
+
+    .info-box p{
+      margin:0;
+      font-size:11px;
+      line-height:1.55;
+    }
+
+    /* FOOTER */
+    .footer{
+      background:#fff;
+      border-top:1px solid rgba(0,0,0,0.06);
+      padding:46px 0;
+      margin-top:26px;
+    }
+
+    .footer-grid{
+      display:grid;
+      grid-template-columns:1.2fr 1fr 1fr 1fr 1fr;
+      gap:22px;
+    }
+
+    .footer-brand img{
+      max-width:210px;
+      margin-bottom:12px;
+    }
+
+    .footer-brand p{
+      color:var(--muted);
+      font-size:13px;
+      max-width:260px;
+      line-height:1.6;
+    }
+
+    .footer-col h4{
+      font-size:15px;
+      margin-bottom:14px;
+      font-weight:800;
+    }
+
+    .footer-col ul{
+      list-style:none;
+      display:grid;
+      gap:10px;
+    }
+
+    .footer-col a{
+      color:#475467;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .contact-phone{
+      color:var(--primary);
+      font-size:16px;
+      font-weight:900;
+      display:inline-block;
+      margin-bottom:12px;
+    }
+
+    .socials{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .socials a{
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+      transition:0.25s ease;
+    }
+
+    .socials a:hover{
+      background:linear-gradient(135deg, var(--danger), var(--danger-dark));
+    }
+
+    .socials img{
+      width:14px;
+      height:14px;
+      object-fit:contain;
+      filter:brightness(0) invert(1);
+    }
+
+    /* MODAL */
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(10,16,28,0.65);
+      backdrop-filter:blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:999;
+    }
+
+    .modal-overlay.active{
+      display:flex;
+    }
+
+    .modal-box{
+      width:min(100%, 520px);
+      background:#fff;
+      border-radius:24px;
+      padding:34px 28px;
+      text-align:center;
+      box-shadow:0 35px 80px rgba(0,0,0,0.22);
+      transform:translateY(12px);
+      animation:popupIn .28s ease forwards;
+    }
+
+    @keyframes popupIn{
+      to{
+        transform:translateY(0);
+      }
+    }
+
+    .modal-icon{
+      width:74px;
+      height:74px;
+      margin:0 auto 18px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:32px;
+      color:#fff;
+      background:linear-gradient(135deg, var(--primary), var(--accent));
+    }
+
+    .modal-box h3{
+      font-size:30px;
+      margin-bottom:12px;
+    }
+
+    .modal-box p{
+      color:var(--muted);
+      font-size:16px;
+      margin-bottom:22px;
+    }
+
+    .modal-summary{
+      text-align:left;
+      background:#f8fbff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:24px;
+    }
+
+    .modal-summary div{
+      font-size:14px;
+      color:#344054;
+      margin-bottom:8px;
+      font-weight:600;
+    }
+
+    .modal-summary div:last-child{
+      margin-bottom:0;
+    }
+
+    .modal-actions{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px){
+      .hero-wrap,
+      .destinations-wrap,
+      .split-grid,
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+
+      .booking-grid{
+        grid-template-columns:repeat(2, 1fr);
+      }
+
+      .booking-bottom{
+        grid-template-columns:1fr;
+      }
+
+      .feature-grid{
+        grid-template-columns:1fr;
+      }
+
+      .footer-grid{
+        gap:28px;
+      }
+
+      .hero-copy h1{
+        font-size:44px;
+        max-width:100%;
+      }
+
+      .hero-visual{
+        min-height:300px;
+      }
+
+      .content-side h2{
+        max-width:100%;
+      }
+
+      .dest-copy{
+        text-align:center;
+      }
+
+      .dest-copy p{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      .dest-copy .tag-list{
+        justify-content:center;
+      }
+    }
+
+    @media (max-width: 767px){
+      .nav{
+        min-height:auto;
+        flex-direction:column;
+        align-items:flex-start;
+        padding:14px 0;
+        gap:14px;
+      }
+
+      .call-pill{
+        display: block;
+    }
+
+      .nav-left-group{
+        width:100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap:12px;
+      }
+
+      .logo{
+        order:1;
+      }
+
+      .call-pill{
+        order:2;
+      }
+
+      .nav-links{
+        width:100%;
+        justify-content:flex-start;
+        flex-wrap:wrap;
+        gap:16px;
+      }
+
+      .hero{
+        padding-top:34px;
+      }
+
+      .hero-copy h1{
+        font-size:32px;
+        /* max-width:270px; */
+      }
+
+      .hero-copy p{
+        font-size:13px;
+        max-width:260px;
+      }
+
+      .hero-visual{
+        min-height:220px;
+      }
+
+      .trip-tabs{
+        grid-template-columns:1fr;
+      }
+
+      .booking-grid{
+        grid-template-columns:1fr;
+      }
+
+      .options-row{
+        gap:14px;
+      }
+
+      .destinations{
+        padding:54px 0;
+      }
+
+      .dest-cards{
+        min-height:auto;
+        flex-direction:column;
+        align-items:center;
+        gap:16px;
+      }
+
+      .dest-bg-shape{
+        width:100%;
+        height:220px;
+        top:36px;
+        border-radius:28px;
+      }
+
+      .city-card.small,
+      .city-card.tall{
+        width:100%;
+        max-width:320px;
+        transform:none;
+      }
+
+      .city-card.small{
+        height:240px;
+      }
+
+      .city-card.tall{
+        height:340px;
+      }
+
+      .city-card.small .city-label{
+        font-size:20px;
+      }
+
+      .city-card.tall .city-label{
+        font-size:26px;
+      }
+
+      .visual-side{
+        min-height:220px;
+      }
+
+      .visual-side.map-style{
+        min-height:250px;
+      }
+
+      .tag-frankfurt-a{ left:14px; top:98px; }
+      .tag-frankfurt-b{ left:14px; top:132px; }
+      .tag-munich-a{ left:95px; top:30px; }
+      .tag-munich-b{ left:135px; top:44px; }
+      .tag-berlin-a{ left:105px; bottom:56px; }
+      .tag-berlin-b{ left:62px; bottom:12px; }
+      .tag-vienna-a{ right:24px; bottom:58px; }
+      .tag-vienna-b{ right:18px; bottom:12px; }
+
+      .container{
+        width:min(100% - 18px, 1180px);
+      }
+
+      .content-side h2{
+        font-size:18px;
+      }
+
+      .footer{
+        padding:40px 0;
+      }
+    }
+    
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container">
+      <div class="nav">
+        <div class="nav-left-group">
+          <a href="#" class="logo">
+            <img src="./logo.png" alt="Singapore Airlines Logo">
+          </a>
+
+          <a href="tel:+18445281617" class="call-pill">📞 +1 (844) 528-1617</a>
+        </div>
+
+        <nav class="nav-links">
+          <a href="#booking">Book</a>
+          <a href="#destinations">My Trips</a>
+          <a href="#about">Travel Info</a>
+          <a href="#support">Deals</a>
+          <a href="#footer">Help</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-wrap">
+        <div class="hero-copy">
+          <h1><span class="accent">Singapore Airlines</span><br>Booking, Changes and Reservations</h1>
+          <p>
+            Book Singapore Airlines flights with confidence and get support for reservations, schedule changes, and flexible travel planning.
+          </p>
+
+          <div class="hero-actions">
+            <a href="tel:+18445281617" class="btn btn-primary">Call Now 📞 +1 (844) 528-1617</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <img class="hero-line" src="assets/media/vector-line.png" alt="">
+          <img class="location-badge" src="assets/media/location-blue.png" alt="">
+          <img class="plane-image" src="./plane.png" alt="Singapore Airlines Flight">
+        </div>
+      </div>
+
+      <div class="booking-wrap" id="booking">
+        <div class="booking-card">
+          <div class="trip-tabs">
+            <button type="button" class="trip-tab"><a href="tel:+18445281617">✈ International Flights</a></button>
+            <button type="button" class="trip-tab"><a href="tel:+18445281617">✈ Europe Flights</a></button>
+            <button type="button" class="trip-tab"><a href="tel:+18445281617">✈ Business Class</a></button>
+          </div>
+
+          <div class="options-row">
+            <label class="radio-inline"><input type="radio" name="tripType" value="One way" checked> One way</label>
+            <label class="radio-inline"><input type="radio" name="tripType" value="Round-trip"> Round-trip</label>
+            <label class="radio-inline"><input type="radio" name="tripType" value="Multi-City"> Multi-City</label>
+          </div>
+
+          <form id="flightForm">
+            <div class="booking-grid">
+              <div class="field">
+                <label for="from">From</label>
+                <input type="text" id="from" name="from" placeholder="Departure city" required />
+              </div>
+
+              <div class="field">
+                <label for="to">To</label>
+                <input type="text" id="to" name="to" placeholder="Destination city" required />
+              </div>
+
+              <div class="field">
+                <label for="departing">Departing</label>
+                <input type="date" id="departing" name="departing" required />
+              </div>
+
+              <div class="field">
+                <label for="returning">Returning</label>
+                <input type="date" id="returning" name="returning" />
+              </div>
+
+              <div class="field">
+                <label for="passengers">Passengers</label>
+                <select id="passengers" name="passengers" required>
+                  <option value="">Select</option>
+                  <option>1 Passenger</option>
+                  <option>2 Passengers</option>
+                  <option>3 Passengers</option>
+                  <option>4 Passengers</option>
+                  <option>5+ Passengers</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="travelClass">Class</label>
+                <select id="travelClass" name="travelClass" required>
+                  <option value="">Select</option>
+                  <option>Economy</option>
+                  <option>Premium Economy</option>
+                  <option>Business Class</option>
+                  <option>First Class</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="booking-bottom">
+              <div class="mini-controls">
+                <label class="radio-inline"><input type="radio" name="stopType" value="Departure" checked> Departure</label>
+                <label class="radio-inline"><input type="radio" name="stopType" value="Return"> Return</label>
+              </div>
+
+              <div class="counter-wrap">
+                <span>Trip Duration</span>
+                <div class="counter">
+                  <button type="button" id="minusBtn">−</button>
+                  <span class="counter-value" id="daysCount">5</span>
+                  <button type="button" id="plusBtn">+</button>
+                </div>
+              </div>
+
+              <button id="showFlight" type="submit" class="btn btn-primary">Show Flight ✈</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:34px;">
+    <div class="container">
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/media/benefit-1.png" alt="">
+          </div>
+          <h3>Simple Booking Flow</h3>
+          <p>Search flights quickly with a clean booking layout for routes, dates, and passenger details.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/media/benefit-2.png" alt="">
+          </div>
+          <h3>Flexible Cabin Choices</h3>
+          <p>Review Economy, Premium Economy, Business Class, and First Class options in one place.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <img src="assets/media/benefit-3.png" alt="">
+          </div>
+          <h3>Travel Assistance</h3>
+          <p>Get support for reservations, flight schedule changes, and general travel questions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section destinations" id="destinations">
+    <div class="container">
+      <div class="destinations-wrap">
+        <div class="dest-copy">
+          <div class="tag-list">
+            <span>Europe Routes</span>
+            <span>Flight</span>
+            <span>Deals</span>
+            <span class="highlight">Singapore Airlines</span>
+          </div>
+
+          <p>
+            Explore top destinations and enjoy a cleaner travel booking experience for international and regional routes.
+          </p>
+
+          <a href="tel:+18445281617" class="btn btn-primary">Call Now 📞 +1 (844) 528-1617</a>
+        </div>
+
+        <div class="dest-cards">
+          <div class="dest-bg-shape"></div>
+
+          <div class="city-card small">
+            <img src="assets/media/img1.webp" alt="Frankfurt">
+          </div>
+
+          <div class="city-card tall">
+            <img src="assets/media/img2.webp" alt="Munich">
+          </div>
+
+          <div class="city-card small">
+            <img src="assets/media/img3.webp" alt="Berlin">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="container">
+      <div class="content-card">
+        <div class="split-grid">
+          <div class="visual-side map-style">
+            <img src="assets/media/map.png" alt="Route Map">
+            <span class="map-tag tag-blue tag-frankfurt-a">Frankfurt</span>
+            <span class="map-tag tag-blue tag-frankfurt-b">Frankfurt</span>
+            <span class="map-tag tag-orange tag-munich-a">Munich</span>
+            <span class="map-tag tag-orange tag-munich-b">Munich</span>
+            <span class="map-tag tag-blue tag-berlin-a">Berlin</span>
+            <span class="map-tag tag-blue tag-berlin-b">Berlin</span>
+            <span class="map-tag tag-orange tag-vienna-a">Vienna</span>
+            <span class="map-tag tag-orange tag-vienna-b">Vienna</span>
+          </div>
+
+          <div class="content-side">
+            <h2>Easy Booking & Flexible Travel Options</h2>
+            <p>
+              Singapore Airlines offers a streamlined way to plan your trip with flexible route selection, cabin choices, and support access.
+            </p>
+
+            <ul class="info-list">
+              <li>Simple route, date, and passenger booking setup</li>
+              <li>Flexible options for European and international travel</li>
+              <li>Modern layout with cleaner spacing and easier readability</li>
+              <li>Helpful support for changes, reservations, and travel planning</li>
+            </ul>
+
+            <a href="tel:+18445281617" class="btn btn-primary">Plan Your Trip</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="content-card">
+        <div class="split-grid">
+          <div class="content-side">
+            <h2>Flight Changes with a Customer-Focused Experience</h2>
+            <p>
+              Travel plans can shift, and Singapore Airlines provides support for reservation updates and booking adjustments.
+            </p>
+            <p>
+              Manage your itinerary, review available changes, and stay on top of your travel details with a simple layout.
+            </p>
+
+            <div class="info-boxes">
+              <div class="info-box">
+                <h4>Easy reservation updates</h4>
+                <p>Review and manage itinerary changes with a cleaner flow.</p>
+              </div>
+              <div class="info-box">
+                <h4>Support when you need it</h4>
+                <p>Reach out for help with bookings, route changes, and trip coordination.</p>
+              </div>
+            </div>
+
+            <a href="tel:+18445281617" class="btn btn-primary">Call Now 📞 +1 (844) 528-1617</a>
+          </div>
+
+          <div class="visual-side">
+            <img src="assets/media/img6.webp" alt="Lufthansa Travel Experience">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="support" style="padding-top:0;">
+    <div class="container">
+      <div class="content-card">
+        <div class="split-grid">
+          <div class="visual-side">
+            <img src="assets/media/img5.webp" alt="Lufthansa Booking Support">
+          </div>
+
+          <div class="content-side">
+            <h2>Prioritizing Travel Ease, Comfort & Support</h2>
+            <p>
+              This section highlights the comfort, service, and flexible planning experience Singapore Airlines travelers look for.
+            </p>
+
+            <div class="info-boxes">
+              <div class="info-box">
+                <h4>Flexible booking setup</h4>
+                <p>Choose destinations, dates, passengers, and class preferences with ease.</p>
+              </div>
+              <div class="info-box">
+                <h4>Comfort-focused travel</h4>
+                <p>Enjoy a smoother experience with balanced layout, cleaner information, and clear sections.</p>
+              </div>
+              <div class="info-box">
+                <h4>Modern travel support</h4>
+                <p>Access booking guidance and reservation help in a polished interface.</p>
+              </div>
+            </div>
+
+            <a href="tel:+18445281617" class="btn btn-secondary">Start Booking</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="./JetBlue-Logo.png" alt="Singapore Airlines Logo">
+          <p>
+            Book Singapore Airlines flights and review travel options, schedule updates, and reservation assistance in one place.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Booking</h4>
+          <ul>
+            <li><a href="#">Flight Reservations</a></li>
+            <li><a href="#">International Routes</a></li>
+            <li><a href="#">Cabin Classes</a></li>
+            <li><a href="#">Travel Planning</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#booking">Book</a></li>
+            <li><a href="#destinations">My Trips</a></li>
+            <li><a href="#about">Travel Info</a></li>
+            <li><a href="#support">Deals</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Manage</h4>
+          <ul>
+            <li><a href="#">Check-in</a></li>
+            <li><a href="#">Manage Bookings</a></li>
+            <li><a href="#">Travel Updates</a></li>
+            <li><a href="#">Trip Details</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <a href="tel:+18445281617" class="contact-phone">📞 +1 (844) 528-1617</a>
+
+          <div class="socials">
+            <a href="#"><img src="assets/media/instagram.png" alt=""></a>
+            <a href="#"><img src="assets/media/facebook.png" alt=""></a>
+            <a href="#"><img src="assets/media/linkedin.png" alt=""></a>
+            <a href="#"><img src="assets/media/twitter.png" alt=""></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-box">
+      <div class="modal-icon">✈</div>
+      <h3>Flight Request Submitted</h3>
+      <p>Your Singapore Airlines travel details have been captured successfully. Continue using the button below.</p>
+
+      <div class="modal-summary" id="modalSummary"></div>
+
+      <div class="modal-actions">
+        <a href="tel:+18445281617" class="btn btn-primary">Call Now</a>
+        <button type="button" class="btn btn-light" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('flightForm');
+    const modal = document.getElementById('successModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const modalSummary = document.getElementById('modalSummary');
+    const minusBtn = document.getElementById('minusBtn');
+    const plusBtn = document.getElementById('plusBtn');
+    const daysCount = document.getElementById('daysCount');
+
+    let totalDays = 5;
+
+    function updateDays() {
+      daysCount.textContent = totalDays;
+    }
+
+    minusBtn.addEventListener('click', function () {
+      if (totalDays > 1) {
+        totalDays--;
+        updateDays();
+      }
+    });
+
+    plusBtn.addEventListener('click', function () {
+      totalDays++;
+      updateDays();
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const from = document.getElementById('from').value.trim();
+      const to = document.getElementById('to').value.trim();
+      const departing = document.getElementById('departing').value;
+      const returning = document.getElementById('returning').value || 'Not selected';
+      const passengers = document.getElementById('passengers').value;
+      const travelClass = document.getElementById('travelClass').value;
+      const tripType = document.querySelector('input[name="tripType"]:checked')?.value || 'One way';
+      const stopType = document.querySelector('input[name="stopType"]:checked')?.value || 'Departure';
+
+      if (!from || !to || !departing || !passengers || !travelClass) {
+        alert('Please fill all required fields.');
+        return;
+      }
+
+      modalSummary.innerHTML = `
+        <div><strong>Trip Type:</strong> ${tripType}</div>
+        <div><strong>Route:</strong> ${from} → ${to}</div>
+        <div><strong>Departing:</strong> ${departing}</div>
+        <div><strong>Returning:</strong> ${returning}</div>
+        <div><strong>Passengers:</strong> ${passengers}</div>
+        <div><strong>Class:</strong> ${travelClass}</div>
+        <div><strong>Journey Phase:</strong> ${stopType}</div>
+        <div><strong>Trip Duration:</strong> ${totalDays} day(s)</div>
+      `;
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    closeModalBtn.addEventListener('click', function () {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+</body>
+</html>
